@@ -1,0 +1,128 @@
+#include <stdio.h>
+
+// --- Funções Recursivas para Movimento das Peças ---
+
+/**
+ * @brief Simula o movimento da Torre recursivamente.
+ * A torre se move em linha reta.
+ *
+ * @param casasRestantes O número de casas restantes para mover.
+ * @param direcao A direção do movimento (e.g., "Direita", "Esquerda", "Cima", "Baixo").
+ */
+void moverTorreRecursivo(int casasRestantes, const char *direcao) {
+    // Caso base da recursão: se não há mais casas para mover, a função termina.
+    if (casasRestantes <= 0) {
+        return;
+    }
+    // Imprime a direção do movimento para a casa atual.
+    printf("%s\n", direcao);
+    // Chamada recursiva para mover a próxima casa.
+    moverTorreRecursivo(casasRestantes - 1, direcao);
+}
+
+/**
+ * @brief Simula o movimento do Bispo recursivamente com loops aninhados para cada passo.
+ * O bispo se move na diagonal.
+ *
+ * @param casasRestantes O número de "passos" diagonais restantes para mover.
+ * @param direcaoVertical A parte vertical da direção diagonal (e.g., "Cima", "Baixo").
+ * @param direcaoHorizontal A parte horizontal da direção diagonal (e.g., "Direita", "Esquerda").
+ */
+void moverBispoRecursivo(int casasRestantes, const char *direcaoVertical, const char *direcaoHorizontal) {
+    // Caso base da recursão: se não há mais passos diagonais, a função termina.
+    if (casasRestantes <= 0) {
+        return;
+    }
+
+    // Loops aninhados para simular um "passo" diagonal
+    // Loop externo: representa o movimento vertical da diagonal (1 casa)
+    for (int i = 0; i < 1; i++) { // Garanter que se mova apenas uma vez na vertical por passo diagonal
+        // Loop interno: representa o movimento horizontal da diagonal (1 casa)
+        for (int j = 0; j < 1; j++) { // Garanter que se mova apenas uma vez na horizontal por passo diagonal
+            printf("%s, %s\n", direcaoVertical, direcaoHorizontal); // Imprime a combinação de direções
+        }
+    }
+    // Chamada recursiva para mover o próximo passo diagonal.
+    moverBispoRecursivo(casasRestantes - 1, direcaoVertical, direcaoHorizontal);
+}
+
+
+/**
+ * @brief Simula o movimento da Rainha recursivamente.
+ * A rainha se move em qualquer direção reta.
+ *
+ * @param casasRestantes O número de casas restantes para mover.
+ * @param direcao A direção do movimento (e.g., "Direita", "Esquerda", "Cima", "Baixo").
+ */
+void moverRainhaRecursivo(int casasRestantes, const char *direcao) {
+    // Caso base da recursão: se não há mais casas para mover, a função termina.
+    if (casasRestantes <= 0) {
+        return;
+    }
+    // Imprime a direção do movimento para a casa atual.
+    printf("%s\n", direcao);
+    // Chamada recursiva para mover a próxima casa.
+    moverRainhaRecursivo(casasRestantes - 1, direcao);
+}
+
+// Função principal do programa
+int main() {
+    // --- Simulação do movimento da Torre (com recursividade) ---
+    printf("--- Movimento da Torre (5 casas para a direita - Recursivo) ---\n");
+    int casasTorre = 5;
+    moverTorreRecursivo(casasTorre, "Direita");
+    printf("\n");
+
+    // --- Simulação do movimento do Bispo (com recursividade e loops aninhados) ---
+    printf("--- Movimento do Bispo (5 casas na diagonal para cima e a direita - Recursivo com Loops Aninhados) ---\n");
+    int casasBispo = 5;
+    moverBispoRecursivo(casasBispo, "Cima", "Direita");
+    printf("\n");
+
+    // --- Simulação do movimento da Rainha (com recursividade) ---
+    printf("--- Movimento da Rainha (8 casas para a esquerda - Recursivo) ---\n");
+    int casasRainha = 8;
+    moverRainhaRecursivo(casasRainha, "Esquerda");
+    printf("\n");
+
+    // --- Simulação do movimento do Cavalo (com loops aninhados complexos) ---
+    printf("--- Movimento do Cavalo (2 casas para cima e 1 casa para a direita - Loops Aninhados Complexos) ---\n");
+
+    // Definimos as partes do movimento do Cavalo
+    int movimentoVerticalCavalo = 2; // Duas casas na vertical
+    int movimentoHorizontalCavalo = 1; // Uma casa na horizontal
+
+    // Variáveis para controlar os loops aninhados do movimento do Cavalo
+    int i, j;
+    int movendoVertical = 1; // Flag para indicar se estamos no movimento vertical
+    int movendoHorizontal = 0; // Flag para indicar se estamos no movimento horizontal
+
+    // Loop externo: controla o progresso geral do movimento em "L" do Cavalo.
+    // Iremos iterar até que ambas as partes do movimento (vertical e horizontal) estejam completas.
+    for (i = 0; i < movimentoVerticalCavalo + movimentoHorizontalCavalo; i++) {
+        // Se ainda precisamos mover verticalmente
+        if (movendoVertical && movimentoVerticalCavalo > 0) {
+            printf("Cima\n"); // Imprime a direção "Cima"
+            movimentoVerticalCavalo--; // Decrementa as casas verticais restantes
+            // Se as casas verticais foram completadas, mudamos para o movimento horizontal.
+            if (movimentoVerticalCavalo == 0) {
+                movendoVertical = 0;
+                movendoHorizontal = 1;
+            }
+            continue; // Pula para a próxima iteração do loop externo
+        }
+
+        // Se ainda precisamos mover horizontalmente
+        if (movendoHorizontal && movimentoHorizontalCavalo > 0) {
+            printf("Direita\n"); // Imprime a direção "Direita"
+            movimentoHorizontalCavalo--; // Decrementa as casas horizontais restantes
+            // Se as casas horizontais foram completadas, podemos sair do loop.
+            if (movimentoHorizontalCavalo == 0) {
+                break; // Sai do loop externo, pois o movimento do Cavalo está completo
+            }
+        }
+    }
+    printf("\n");
+
+    return 0; // Indica que o programa foi executado com sucesso
+}
